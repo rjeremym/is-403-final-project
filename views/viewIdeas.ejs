@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Ideas - Business Ideas Tracker</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <%- include('partials/nav') %>
+
+    <div class="container">
+        <header class="page-header">
+            <h1>My Business Ideas</h1>
+            <a href="/addIdea" class="btn btn-primary">+ Add New Idea</a>
+        </header>
+
+        <!-- Search/Filter Form -->
+        <div class="search-container">
+            <h2>Search & Filter Ideas</h2>
+            <form action="/ideas" method="GET" class="search-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="searchName">Idea Name</label>
+                        <input type="text" id="searchName" name="searchName" 
+                               value="<%= searchParams.searchName || '' %>" 
+                               placeholder="Search by name">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="searchMarketing">Marketing Strategy</label>
+                        <input type="text" id="searchMarketing" name="searchMarketing" 
+                               value="<%= searchParams.searchMarketing || '' %>" 
+                               placeholder="e.g., social media, SEO">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="searchCustomer">Target Customer</label>
+                        <input type="text" id="searchCustomer" name="searchCustomer" 
+                               value="<%= searchParams.searchCustomer || '' %>" 
+                               placeholder="e.g., young professionals">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="minCost">Min Cost ($)</label>
+                        <input type="number" id="minCost" name="minCost" 
+                               value="<%= searchParams.minCost || '' %>" 
+                               placeholder="0" step="0.01">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="maxCost">Max Cost ($)</label>
+                        <input type="number" id="maxCost" name="maxCost" 
+                               value="<%= searchParams.maxCost || '' %>" 
+                               placeholder="10000" step="0.01">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="minPotential">Min Potential (1-5 stars)</label>
+                        <select id="minPotential" name="minPotential">
+                            <option value="">Any</option>
+                            <option value="1" <%= searchParams.minPotential == '1' ? 'selected' : '' %>>1+ Stars</option>
+                            <option value="2" <%= searchParams.minPotential == '2' ? 'selected' : '' %>>2+ Stars</option>
+                            <option value="3" <%= searchParams.minPotential == '3' ? 'selected' : '' %>>3+ Stars</option>
+                            <option value="4" <%= searchParams.minPotential == '4' ? 'selected' : '' %>>4+ Stars</option>
+                            <option value="5" <%= searchParams.minPotential == '5' ? 'selected' : '' %>>5 Stars</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Search</button>
+                    <a href="/ideas" class="btn btn-secondary">Clear Filters</a>
+                </div>
+            </form>
+        </div>
+
+        <!-- Ideas List -->
+        <div class="ideas-container">
+            <% if (ideas.length === 0) { %>
+                <div class="no-results">
+                    <p>No ideas found. <a href="/addIdea">Add your first idea</a></p>
+                </div>
+            <% } else { %>
+                <p class="results-count">Found <%= ideas.length %> idea(s)</p>
+                
+                <% ideas.forEach(idea => { %>
+                    <div class="idea-card">
+                        <div class="idea-header">
+                            <h3><%= idea.ideaname %></h3>
+                            <div class="idea-potential">
+                                <% if (idea.potential) { %>
+                                    <span class="stars">
+                                        <% for(let i = 0; i < idea.potential; i++) { %>★<% } %>
+                                        <% for(let i = idea.potential; i < 5; i++) { %>☆<% } %>
+                                    </span>
+                                <% } %>
+                            </div>
+                        </div>
+
+                        <p class="idea-description"><%= idea.ideadescription %></p>
+
+                        <div class="idea-details">
+                            <% if (idea.targetcustomer) { %>
+                                <div class="detail-item">
+                                    <strong>Target Customer:</strong> <%= idea.targetcustomer %>
+                                </div>
+                            <% } %>
+
+                            <% if (idea.marketingstrategy) { %>
+                                <div class="detail-item">
+                                    <strong>Marketing:</strong> <%= idea.marketingstrategy %>
+                                </div>
+                            <% } %>
+
+                            <% if (idea.estimatedcost) { %>
+                                <div class="detail-item">
+                                    <strong>Estimated Cost:</strong> $<%= parseFloat(idea.estimatedcost).toFixed(2) %>
+                                </div>
+                            <% } %>
+
+                            <% if (idea.timeline) { %>
+                                <div class="detail-item">
+                                    <strong>Timeline:</strong> <%= idea.timeline %>
+                                </div>
+                            <% } %>
+                        </div>
+
+                        <div class="idea-meta">
+                            <div class="owner-info">
+                                <strong>Created by:</strong> 
+                                <%= idea.ownerfirstname %> <%= idea.ownerlastname %> 
+                                (<%= idea.ownername %>)
+                            </div>
+
+                            <% if (idea.collaborators && idea.collaborators.length > 0) { %>
+                                <div class="collaborators-info">
+                                    <strong>Collaborators:</strong>
+                                    <% idea.collaborators.forEach((collab, index) => { %>
+                                        <%= collab.firstname %> <%= collab.lastname %><%= index < idea.collaborators.length - 1 ? ', ' : '' %>
+                                    <% }) %>
+                                </div>
+                            <% } %>
+                        </div>
+
+                        <div class="idea-actions">
+                            <a href="/editIdea/<%= idea.ideaid %>" class="btn btn-small btn-secondary">Edit</a>
+                            
+                            <% if (idea.ownerid === userId) { %>
+                                <form action="/deleteIdea/<%= idea.ideaid %>" method="POST" style="display: inline;" 
+                                      onsubmit="return confirm('Are you sure you want to delete this idea? This will also remove all collaborators.');">
+                                    <button type="submit" class="btn btn-small btn-danger">Delete</button>
+                                </form>
+                            <% } else { %>
+                                <form action="/leaveCollaboration/<%= idea.ideaid %>" method="POST" style="display: inline;"
+                                      onsubmit="return confirm('Are you sure you want to leave this collaboration?');">
+                                    <button type="submit" class="btn btn-small btn-warning">Leave Collaboration</button>
+                                </form>
+                            <% } %>
+                        </div>
+                    </div>
+                <% }) %>
+            <% } %>
+        </div>
+    </div>
+</body>
+</html>

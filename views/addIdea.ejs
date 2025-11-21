@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Idea - Business Ideas Tracker</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <%- include('partials/nav') %>
+
+    <div class="container">
+        <header class="page-header">
+            <h1>Add New Business Idea</h1>
+            <a href="/ideas" class="btn btn-secondary">Back to Ideas</a>
+        </header>
+
+        <div class="form-card">
+            <% if (error_message) { %>
+                <div class="alert alert-error">
+                    <%= error_message %>
+                </div>
+            <% } %>
+
+            <form action="/addIdea" method="POST">
+                <div class="form-group">
+                    <label for="ideaname">Idea Name *</label>
+                    <input type="text" id="ideaname" name="ideaname" required 
+                           placeholder="e.g., Eco-Friendly Lunch Boxes">
+                </div>
+
+                <div class="form-group">
+                    <label for="ideadescription">Description *</label>
+                    <textarea id="ideadescription" name="ideadescription" rows="4" required
+                              placeholder="Describe your business idea in detail..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="targetcustomer">Target Customer</label>
+                    <input type="text" id="targetcustomer" name="targetcustomer" 
+                           placeholder="e.g., Health-conscious parents aged 30-45">
+                </div>
+
+                <div class="form-group">
+                    <label for="marketingstrategy">Marketing Strategy</label>
+                    <textarea id="marketingstrategy" name="marketingstrategy" rows="3"
+                              placeholder="e.g., Instagram influencer partnerships, Facebook ads, SEO blog content"></textarea>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="estimatedcost">Estimated Cost ($)</label>
+                        <input type="number" id="estimatedcost" name="estimatedcost" 
+                               step="0.01" min="0" placeholder="500.00">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="timeline">Timeline to Implement</label>
+                        <input type="text" id="timeline" name="timeline" 
+                               placeholder="e.g., 3 months, 6-8 weeks">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="potential">Success Potential (1-5 stars)</label>
+                    <select id="potential" name="potential">
+                        <option value="">Select rating...</option>
+                        <option value="1">★☆☆☆☆ - Low potential</option>
+                        <option value="2">★★☆☆☆ - Below average</option>
+                        <option value="3">★★★☆☆ - Average</option>
+                        <option value="4">★★★★☆ - High potential</option>
+                        <option value="5">★★★★★ - Excellent potential</option>
+                    </select>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Add Idea</button>
+                    <a href="/ideas" class="btn btn-secondary">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

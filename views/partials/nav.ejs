@@ -1,0 +1,17 @@
+<nav class="navbar">
+    <div class="nav-container">
+        <a href="/" class="nav-logo">💡 Business Ideas Tracker</a>
+        
+        <ul class="nav-menu">
+            <li><a href="/">Dashboard</a></li>
+            <li><a href="/ideas">My Ideas</a></li>
+            <li><a href="/addIdea">Add Idea</a></li>
+            <% if (username) { %>
+                <li class="nav-user">
+                    <span>Hello, <%= username %></span>
+                </li>
+                <li><a href="/logout" class="btn-logout">Logout</a></li>
+            <% } %>
+        </ul>
+    </div>
+</nav>
