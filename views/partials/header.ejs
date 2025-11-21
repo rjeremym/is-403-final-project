@@ -1,0 +1,27 @@
+<!-- FILE: views/partials/header.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Business Ideas Tracker</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <h2>💡 Business Ideas</h2>
+            </div>
+            <% if (typeof firstname !== 'undefined') { %>
+            <div class="nav-links">
+                <a href="/">Home</a>
+                <a href="/add-idea">Add Idea</a>
+                <a href="/view-ideas">View Ideas</a>
+                <span class="nav-user">Welcome, <%= firstname %></span>
+                <a href="/logout" class="btn-logout">Logout</a>
+            </div>
+            <% } %>
+        </div>
+    </nav>
+    <main class="container">

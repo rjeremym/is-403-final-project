@@ -1,0 +1,55 @@
+<!-- FILE: views/landing.ejs -->
+<%- include('partials/header') %>
+
+<div class="hero-section">
+    <h1>Welcome, <%= firstName || username %>! 👋</h1>
+    <p class="hero-subtitle">Organize, track, and grow your best business ideas</p>
+    
+    <div class="action-cards">
+        <a href="/add-idea" class="action-card">
+            <div class="card-icon">➕</div>
+            <h3>Add New Idea</h3>
+            <p>Capture your latest business inspiration</p>
+        </a>
+        
+        <a href="/view-ideas" class="action-card">
+            <div class="card-icon">📊</div>
+            <h3>View Ideas</h3>
+            <p>Browse and manage your idea collection</p>
+        </a>
+        
+        <a href="/view-ideas" class="action-card">
+            <div class="card-icon">🔍</div>
+            <h3>Search & Filter</h3>
+            <p>Find ideas by strategy or budget</p>
+        </a>
+    </div>
+</div>
+
+<div class="features-section">
+    <h2>Why Track Your Ideas?</h2>
+    <div class="features-grid">
+        <div class="feature">
+            <div class="feature-icon">📝</div>
+            <h4>Organized Documentation</h4>
+            <p>Keep all your business ideas in one place with detailed information</p>
+        </div>
+        <div class="feature">
+            <div class="feature-icon">🎯</div>
+            <h4>Strategic Planning</h4>
+            <p>Define marketing strategies, target customers, and timelines</p>
+        </div>
+        <div class="feature">
+            <div class="feature-icon">💰</div>
+            <h4>Budget Tracking</h4>
+            <p>Estimate costs and filter by budget constraints</p>
+        </div>
+        <div class="feature">
+            <div class="feature-icon">🤝</div>
+            <h4>Collaboration</h4>
+            <p>Share ideas with partners and collaborators</p>
+        </div>
+    </div>
+</div>
+
+<%- include('partials/footer') %>
